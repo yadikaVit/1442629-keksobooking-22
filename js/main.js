@@ -91,3 +91,4 @@ const getArrayOffers = () => {
 };
 
 const getArrayOffersNearby = new Array(OFFERS_COUNT).fill(null).map(() => getArrayOffers());
+Number(getArrayOffersNearby);
