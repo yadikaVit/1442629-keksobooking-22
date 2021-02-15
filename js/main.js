@@ -2,8 +2,8 @@ const TITLES = ['Выгодное предложение', 'Семейный о�
 const TYPES = ['palace', 'flat', 'house', 'bungalow'];
 const CHECKS = ['12:00', '13:00', '14:00'];
 const DESCRIPTIONS = ['Уютная комната', 'Из номера прекрасный вид на горы', 'Рядом есть детская площадка', 'Просторная кухня']
-const PHOTOSARRAY = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-const FEATURESARRAY = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const PHOTOS_ARRAY = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+const FEATURES_ARRAY = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const OFFERS_COUNT = 10;
 
 const getRandomFloatInclusive = (min, max, n) => {
@@ -32,7 +32,7 @@ const getRandomArrayLength = (firstArray, min, max) => {
 }
 
 const removeDuplicates = (ArrayWithDuplicates) => {
-  let result = [];
+  const result = [];
 
   for (let item of ArrayWithDuplicates) {
     if (!result.includes(item)) {
@@ -44,9 +44,8 @@ const removeDuplicates = (ArrayWithDuplicates) => {
 
 //author
 
-const avatars = [];
-
 const getArrayAvatars = (amount) => {
+  const avatars = [];
 
   for (let i = 1; i <= amount; i++)  {
     avatars[i] = 'img/avatars/user0'+ (i) +'.png';
@@ -54,29 +53,25 @@ const getArrayAvatars = (amount) => {
   return avatars;
 };
 
-let avatarsArray = getArrayAvatars(8);
-
 
 // offer
 
 const getArrayOffers = () => {
 
-  const photosArrayNewWithDuplicates = getRandomArrayLength (PHOTOSARRAY, 1, 5);
-  const featuresArrayWithDuplicates = getRandomArrayLength (FEATURESARRAY, 1, 7);
-  const COORDINATESX = getRandomFloatInclusive (35.65000, 35.70000, 5);
-  const COORDINATESY = getRandomFloatInclusive (139.70000, 139.80000, 5);
+  const photosArrayNewWithDuplicates = getRandomArrayLength (PHOTOS_ARRAY, 1, 5);
+  const featuresArrayWithDuplicates = getRandomArrayLength (FEATURES_ARRAY, 1, 7);
+  const coordinates = {
+    x: getRandomFloatInclusive(35.65000, 35.70000, 5),
+    y: getRandomFloatInclusive(139.70000, 139.80000, 5),
+  };
 
   return {
     author: {
-      avatar: getRandomArrayElement(avatarsArray),
-    },
-    location: {
-      x: COORDINATESX,
-      y: COORDINATESY,
+      avatar: getRandomArrayElement(getArrayAvatars(8)),
     },
     offer : {
       title: getRandomArrayElement(TITLES),
-      address: COORDINATESX + ', ' + COORDINATESY,
+      address: Object.values(coordinates).join(', '),
       price: getRandomIntInclusive(1000, 2000),
       type: getRandomArrayElement(TYPES),
       rooms: getRandomIntInclusive(1, 4),
@@ -87,6 +82,7 @@ const getArrayOffers = () => {
       photos:removeDuplicates (photosArrayNewWithDuplicates),
       features: removeDuplicates (featuresArrayWithDuplicates),
     },
+    location: coordinates,
   }
 };
 
