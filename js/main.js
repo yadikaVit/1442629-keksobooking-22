@@ -1,2 +1,95 @@
-import './util.js';
-import './data.js';
+const TITLES = ['Выгодное предложение', 'Семейный отель', 'Лучший вид', 'Самый высокий рейтинг'];
+const TYPES = ['palace', 'flat', 'house', 'bungalow'];
+const CHECKS = ['12:00', '13:00', '14:00'];
+const DESCRIPTIONS = ['Уютная комната', 'Из номера прекрасный вид на горы', 'Рядом есть детская площадка', 'Просторная кухня']
+const PHOTOSARRAY = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+const FEATURESARRAY = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const OFFERS_COUNT = 10;
+
+const getRandomFloatInclusive = (min, max, n) => {
+  if (min < 0 || max < 0 || min > max) {
+    return NaN;
+  }
+  const total = Math.random() * (max - min) + min;
+  return Number(total.toFixed(n));
+}
+
+const getRandomIntInclusive = (min, max) => {
+  return getRandomFloatInclusive(Math.ceil(min), Math.floor(max), 0)
+}
+
+const getRandomArrayElement = (elements) => {
+  return elements[getRandomIntInclusive(0, elements.length - 1)];
+};
+
+const getRandomArrayLength = (firstArray, min, max) => {
+  const n = getRandomIntInclusive (min, max);
+  const newArray = [];
+  for (let i = 0; i <= n - 1; i++) {
+    newArray[i] = getRandomArrayElement(firstArray);
+  }
+  return newArray;
+}
+
+const removeDuplicates = (ArrayWithDuplicates) => {
+  let result = [];
+
+  for (let item of ArrayWithDuplicates) {
+    if (!result.includes(item)) {
+      result.push(item);
+    }
+  }
+  return result;
+};
+
+//author
+
+const avatars = [];
+
+const getArrayAvatars = (amount) => {
+
+  for (let i = 1; i <= amount; i++)  {
+    avatars[i] = 'img/avatars/user0'+ (i) +'.png';
+  }
+  return avatars;
+};
+
+let avatarsArray = getArrayAvatars(8);
+
+
+// offer
+
+const getArrayOffers = () => {
+
+  const photosArrayNewWithDuplicates = getRandomArrayLength (PHOTOSARRAY, 1, 5);
+  const featuresArrayWithDuplicates = getRandomArrayLength (FEATURESARRAY, 1, 7);
+  const COORDINATESX = getRandomFloatInclusive (35.65000, 35.70000, 5);
+  const COORDINATESY = getRandomFloatInclusive (139.70000, 139.80000, 5);
+
+  return {
+    author: {
+      avatar: getRandomArrayElement(avatarsArray),
+    },
+    location: {
+      x: COORDINATESX,
+      y: COORDINATESY,
+    },
+    offer : {
+      title: getRandomArrayElement(TITLES),
+      address: COORDINATESX + ', ' + COORDINATESY,
+      price: getRandomIntInclusive(1000, 2000),
+      type: getRandomArrayElement(TYPES),
+      rooms: getRandomIntInclusive(1, 4),
+      guests: getRandomIntInclusive(1, 8),
+      checkin: getRandomArrayElement(CHECKS),
+      checkout: getRandomArrayElement(CHECKS),
+      description: getRandomArrayElement(DESCRIPTIONS),
+      photos:removeDuplicates (photosArrayNewWithDuplicates),
+      features: removeDuplicates (featuresArrayWithDuplicates),
+    },
+  }
+};
+
+const getArrayOffersNearby = new Array(OFFERS_COUNT).fill(null).map(() => getArrayOffers());
+Number(getArrayOffersNearby);
+
