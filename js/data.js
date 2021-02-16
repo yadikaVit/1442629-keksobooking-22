@@ -1,4 +1,5 @@
 import {getRandomIntInclusive, getRandomFloatInclusive, getRandomArrayElement, getRandomArrayLength, removeDuplicates} from './util.js';
+export {getArrayOffersNearby};
 
 const TITLES = ['Выгодное предложение', 'Семейный отель', 'Лучший вид', 'Самый высокий рейтинг'];
 const TYPES = ['palace', 'flat', 'house', 'bungalow'];
@@ -54,5 +55,3 @@ const getArrayOffers = () => {
 };
 
 const getArrayOffersNearby = new Array(OFFERS_COUNT).fill(null).map(() => getArrayOffers());
-getArrayOffersNearby();
-
