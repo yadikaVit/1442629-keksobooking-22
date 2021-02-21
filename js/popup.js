@@ -26,20 +26,19 @@ function translateType(type) {
 
 
 // Контейнер для карточек
-var PhotoList = cardTemplate.querySelector('.popup__photos');
+const PhotoList = cardTemplate.querySelector('.popup__photos');
 
-var element = PhotoList.children;
-console.log(element)
+const element = PhotoList.children;
 
 
-var createPhotosFragment = function (offer) {
-  var photosFragment = document.createDocumentFragment();
-  for (var i = 1; i <= offer.photos.length; i++) {
-  var clonedElement = element.cloneNode(true);
-  clonedElement.src = offer[i];
-  PhotoList.appendChild(clonedElement);
-}
-return photosFragment;
+const createPhotosFragment = function (offer) {
+  const photosFragment = document.createDocumentFragment();
+  for (let i = 1; i <= offer.photos.length; i++) {
+    const clonedElement = element.cloneNode(true);
+    clonedElement.src = offer[i];
+    PhotoList.appendChild(clonedElement);
+  }
+  return photosFragment;
 };
 
 
@@ -58,7 +57,6 @@ similarOffers.forEach(({offer, author}) => {
   offersElement.querySelector('.popup__photos').appendChild(createPhotosFragment(offer.photos));
   offersElement.querySelector('.popup__avatar').src = author.avatar;
   offerListFragment.appendChild(offersElement);
-  console.log(similarOffers)
 });
 
 offersElementList.appendChild(offerListFragment);
