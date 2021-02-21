@@ -52,6 +52,8 @@ const getArrayOffers = () => {
     },
     location: coordinates,
   }
+
 };
 
-const getArrayOffersNearby = new Array(OFFERS_COUNT).fill(null).map(() => getArrayOffers());
+const getArrayOffersNearby = () => new Array(OFFERS_COUNT).fill(null).map(() => getArrayOffers());
+console.log(getArrayOffersNearby());
