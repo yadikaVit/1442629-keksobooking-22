@@ -6,3 +6,4 @@ import {getFirstOffer} from './popup.js';
 
 getFirstOffer();
 getArrayOffersNearby();
+
