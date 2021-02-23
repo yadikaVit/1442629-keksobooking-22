@@ -1,15 +1,16 @@
 import {getArrayOffersNearby} from './data.js';
+export {getFirstOffer};
 
 const offersElementList = document.querySelector('#map-canvas');
-
 const cardTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
 
 const similarOffers = getArrayOffersNearby();
 const offerListFragment = document.createDocumentFragment();
+const popupPhoto = cardTemplate.querySelector('.popup__photo');
 
-function translateType(type) {
+const translateType = function (type) {
   switch (type) {
     case 'flat':
       return 'Квартира';
@@ -24,8 +25,6 @@ function translateType(type) {
   }
 }
 
-
-const popupPhoto = cardTemplate.querySelector('.popup__photo');
 const createPhotosFragment = function (offer) {
   const photosFragment = document.createDocumentFragment();
   offer.photos.forEach(function (way) {
@@ -35,9 +34,6 @@ const createPhotosFragment = function (offer) {
   });
   return photosFragment;
 };
-
-
-
 
 similarOffers.forEach(({offer, author}) => {
   const offersElement = cardTemplate.cloneNode(true);
@@ -55,4 +51,4 @@ similarOffers.forEach(({offer, author}) => {
   offerListFragment.appendChild(offersElement);
 });
 
-offersElementList.appendChild(offerListFragment.firstChild);
+const getFirstOffer = () => offersElementList.appendChild(offerListFragment.firstChild);
