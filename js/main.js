@@ -3,11 +3,10 @@ import './data.js';
 import './popup.js';
 import './form.js';
 import {getArrayOffersNearby} from './data.js';
-import {renderOffer} from './popup.js';
-
-
-getArrayOffersNearby();
-renderOffer(getArrayOffersNearby()[0]);
-
+import './map.js';
 import {setupForm} from './form.js';
+
 setupForm();
+
+
+

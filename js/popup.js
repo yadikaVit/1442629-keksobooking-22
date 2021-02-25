@@ -33,7 +33,7 @@ const createPhotosFragment = function (photos) {
 };
 
 const renderOffer = function ({offer, author}) {
-  const offersElementList = document.querySelector('#map-canvas');
+  const offersElementList = document.querySelector('.map');
   const offerListFragment = document.createDocumentFragment();
   const offersElement = cardTemplate.cloneNode(true);
 
