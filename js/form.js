@@ -2,7 +2,7 @@ const addMinPrice = function (price) {
   const priceInput = document.querySelector('#price');
   priceInput.placeholder = price.toString();
   priceInput.setAttribute('min', price);
-}
+};
 
 const typeSelect = document.querySelector('#type');
 typeSelect.addEventListener('change', function() {
@@ -19,3 +19,13 @@ typeSelect.addEventListener('change', function() {
 });
 
 
+const timeInSelect = document.querySelector('#timein');
+const timeOutSelect = document.querySelector('#timeout');
+
+timeInSelect.addEventListener('change', function(evt) {
+  timeOutSelect.value = evt.target.value;
+});
+
+timeOutSelect.addEventListener('change', function(evt) {
+  timeInSelect.value = evt.target.value;
+});
