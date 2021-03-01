@@ -5,19 +5,22 @@ const addMinPrice = function (price) {
 };
 
 const typeSelect = document.querySelector('#type');
-typeSelect.addEventListener('change', function() {
-
-  if (typeSelect.value === 'bungalow') {
-    addMinPrice(0);
-  } else if (typeSelect.value === 'flat') {
-    addMinPrice(1000);
-  } else if (typeSelect.value === 'house') {
-    addMinPrice(5000);
-  } else if (typeSelect.value === 'palace') {
-    addMinPrice(10000);
+typeSelect.addEventListener('change', function(evt) {
+  switch (evt.target.value) {
+    case 'bungalow':
+      addMinPrice(0);
+      break;
+    case 'flat':
+      addMinPrice(1000);
+      break;
+    case 'house':
+      addMinPrice(5000);
+      break;
+    default:
+      addMinPrice(10000);
+      break;
   }
 });
-
 
 const timeInSelect = document.querySelector('#timein');
 const timeOutSelect = document.querySelector('#timeout');
