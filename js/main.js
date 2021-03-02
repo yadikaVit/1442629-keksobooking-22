@@ -7,6 +7,4 @@ import './map.js';
 import {setupForm} from './form.js';
 
 setupForm();
-
-
-
+getArrayOffersNearby();
