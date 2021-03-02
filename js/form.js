@@ -1,11 +1,13 @@
-const addMinPrice = function (price) {
-  const priceInput = document.querySelector('#price');
-  priceInput.placeholder = price.toString();
-  priceInput.setAttribute('min', price);
-};
+export {setupForm};
 
-const typeSelect = document.querySelector('#type');
-typeSelect.addEventListener('change', function(evt) {
+const setupMinPrice = function (evt) {
+
+  const addMinPrice = function (price) {
+    const priceInput = document.querySelector('#price');
+    priceInput.placeholder = price.toString();
+    priceInput.setAttribute('min', price);
+  };
+
   switch (evt.target.value) {
     case 'bungalow':
       addMinPrice(0);
@@ -16,19 +18,35 @@ typeSelect.addEventListener('change', function(evt) {
     case 'house':
       addMinPrice(5000);
       break;
-    default:
+    case 'palace':
       addMinPrice(10000);
       break;
+    default:
+      addMinPrice(1000);
+      break;
   }
-});
+};
 
-const timeInSelect = document.querySelector('#timein');
-const timeOutSelect = document.querySelector('#timeout');
 
-timeInSelect.addEventListener('change', function(evt) {
-  timeOutSelect.value = evt.target.value;
-});
+const setupForm = function () {
+  const timeInSelect = document.querySelector('#timein');
+  const timeOutSelect = document.querySelector('#timeout');
+  const typeSelect = document.querySelector('#type');
 
-timeOutSelect.addEventListener('change', function(evt) {
-  timeInSelect.value = evt.target.value;
-});
+  document.addEventListener('DOMContentLoaded', function(evt) {
+    setupMinPrice(evt);
+  });
+
+  typeSelect.addEventListener('change', function(evt) {
+    setupMinPrice(evt);
+  });
+
+  timeInSelect.addEventListener('change', function(evt) {
+    timeOutSelect.value = evt.target.value;
+  });
+
+  timeOutSelect.addEventListener('change', function(evt) {
+    timeInSelect.value = evt.target.value;
+  });
+
+}

@@ -9,4 +9,5 @@ import {renderOffer} from './popup.js';
 getArrayOffersNearby();
 renderOffer(getArrayOffersNearby()[0]);
 
-
+import {setupForm} from './form.js';
+setupForm();
