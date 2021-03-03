@@ -67,4 +67,8 @@ mainPinMarker.addTo(map);
 
 mainPinMarker.on('moveend', (evt) => {
   console.log(evt.target.getLatLng());
+
 });
+
+
+//document.querySelector('#address').value = mainPinMarker.on('moveend');
