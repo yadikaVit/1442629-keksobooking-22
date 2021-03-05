@@ -24,7 +24,7 @@ const mapFilterItems = mapFilterForm.querySelectorAll('.map__filter, .map__featu
 
 const disableMapFilterElements = disableElements(mapFilterItems);
 
-/* global L:readonly */
+
 const map = L.map('map-canvas')
   .on('load', () => {
     console.log('Карта инициализирована');
@@ -52,6 +52,8 @@ const mainPinIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
+const pinLocation = document.querySelector('#address');
+pinLocation.readOnly = true;
 const mainPinMarker = L.marker(
   {
     lat: 35.6895000,
@@ -62,13 +64,38 @@ const mainPinMarker = L.marker(
     icon: mainPinIcon,
   },
 );
-
+pinLocation.value = Object.values(mainPinMarker.getLatLng()).join(', ');
 mainPinMarker.addTo(map);
+
 
 mainPinMarker.on('moveend', (evt) => {
   console.log(evt.target.getLatLng());
 
+  console.log(
+    Object.values(evt.target.getLatLng()).join(', ')
+  );
+  pinLocation.value = Object.values(evt.target.getLatLng()).join(', ');
 });
 
 
-//document.querySelector('#address').value = mainPinMarker.on('moveend');
+
+/*renderOfferOnMap.forEach(({location}) => {
+  const icon = L.icon({
+    iconUrl: 'img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+  });
+
+  const marker = L.marker(
+    {
+      lat: location.x,
+      lng: location.y,
+    },
+    {
+      icon,
+    },
+  );
+
+  marker.addTo(map);
+});
+*/
