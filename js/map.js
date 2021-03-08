@@ -1,3 +1,5 @@
+export {renderOfferOnMap};
+
 const disableElements = function (arrayElements) {
   arrayElements.forEach(function (arrayElement) {
     arrayElement.setAttribute("disabled", "disabled");
@@ -14,7 +16,7 @@ const adForm = document.querySelector('.ad-form');
 adForm.classList.add('ad-form--disabled');
 
 const adFormElements = adForm.querySelectorAll('fieldset');
-const disableAdFormElements = disableElements(adFormElements);
+disableElements(adFormElements);
 
 
 const mapFilterForm = document.querySelector('.map__filters');
@@ -22,7 +24,7 @@ mapFilterForm.classList.add('map__filters--disabled');
 
 const mapFilterItems = mapFilterForm.querySelectorAll('.map__filter, .map__features');
 
-const disableMapFilterElements = disableElements(mapFilterItems);
+disableElements(mapFilterItems);
 
 
 const map = L.map('map-canvas')
@@ -39,7 +41,8 @@ const map = L.map('map-canvas')
     lng: 139.6917100,
   }, 10);
 
-L.tileLayer(
+
+ L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -64,7 +67,7 @@ const mainPinMarker = L.marker(
     icon: mainPinIcon,
   },
 );
-pinLocation.value = Object.values(mainPinMarker.getLatLng()).join(', ');
+pinLocation.value = mainPinMarker.getLatLng().lat.toFixed(5) + ', ' + mainPinMarker.getLatLng().lng.toFixed(5);
 mainPinMarker.addTo(map);
 
 
@@ -74,12 +77,12 @@ mainPinMarker.on('moveend', (evt) => {
   console.log(
     Object.values(evt.target.getLatLng()).join(', ')
   );
-  pinLocation.value = Object.values(evt.target.getLatLng()).join(', ');
+  pinLocation.value = evt.target.getLatLng().lat.toFixed(5) + ', ' + evt.target.getLatLng().lng.toFixed(5);
 });
 
 
-
-/*renderOfferOnMap.forEach(({location}) => {
+const renderOfferOnMap = function(array, bind) {
+  array.forEach(({location}) => {
   const icon = L.icon({
     iconUrl: 'img/pin.svg',
     iconSize: [40, 40],
@@ -96,6 +99,11 @@ mainPinMarker.on('moveend', (evt) => {
     },
   );
 
-  marker.addTo(map);
+  marker
+  .addTo(map)
+  .bindPopup(bind),
+    {
+      keepInView: true,
+    }
 });
-*/
+}
