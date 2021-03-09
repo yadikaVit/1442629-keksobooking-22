@@ -8,4 +8,4 @@ import {setupForm} from './form.js';
 import {renderOfferOnMap} from './map.js'
 
 setupForm();
-getArrayOffersNearby();
+renderOfferOnMap(getArrayOffersNearby())

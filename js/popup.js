@@ -33,8 +33,6 @@ const createPhotosFragment = function (photos) {
 };
 
 const renderOffer = function ({offer, author}) {
-  const offersElementList = document.querySelector('.map');
-  const offerListFragment = document.createDocumentFragment();
   const offersElement = cardTemplate.cloneNode(true);
 
   offersElement.querySelector('.popup__title').textContent = offer.title;
@@ -48,7 +46,6 @@ const renderOffer = function ({offer, author}) {
   offersElement.querySelector('.popup__photos').removeChild(offersElement.querySelector('.popup__photo'));
   offersElement.querySelector('.popup__photos').appendChild(createPhotosFragment(offer.photos));
   offersElement.querySelector('.popup__avatar').src = author.avatar;
-  offerListFragment.appendChild(offersElement);
 
-  return offersElementList.appendChild(offerListFragment);
+  return offersElement
 }
