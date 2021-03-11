@@ -2,10 +2,12 @@ import './util.js';
 import './data.js';
 import './popup.js';
 import './form.js';
-import {getArrayOffersNearby} from './data.js';
 import './map.js';
+import {getArrayOffersNearby} from './data.js';
+import {renderOfferOnMap, mapInitialize, disableForm} from './map.js'
 import {setupForm} from './form.js';
-import {renderOfferOnMap} from './map.js'
 
 setupForm();
-renderOfferOnMap(getArrayOffersNearby())
+renderOfferOnMap(getArrayOffersNearby());
+disableForm ();
+mapInitialize();
