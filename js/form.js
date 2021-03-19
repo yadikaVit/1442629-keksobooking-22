@@ -61,40 +61,42 @@ const validityForm = function () {
   });
 }
 
-const dependenceRoomGuest = function (evt) {
+const roomsNumber = document.querySelector('#room_number');
+
+const dependenceRoomGuest = function () {
   const guestsNumber = document.querySelector('#capacity');
   const guestNumberOne = guestsNumber.querySelector('option[value=\'1\']');
   const guestNumberTwo = guestsNumber.querySelector('option[value=\'2\']');
   const guestNumberThree = guestsNumber.querySelector('option[value=\'3\']');
   const guestNumberNull = guestsNumber.querySelector('option[value=\'0\']');
 
-  guestNumberOne.setAttribute('disabled', 'disabled');
-  guestNumberTwo.setAttribute('disabled', 'disabled');
-  guestNumberThree.setAttribute('disabled', 'disabled');
-  guestNumberNull.setAttribute('disabled', 'disabled');
+  guestNumberOne.disabled = true;
+  guestNumberTwo.disabled = true;
+  guestNumberThree.disabled = true;
+  guestNumberNull.disabled = true;
 
-  switch (evt.target.value) {
+  switch (roomsNumber.value) {
     case '2':
-      guestNumberTwo.removeAttribute('disabled', 'disabled');
-      guestNumberTwo.setAttribute('selected', 'selected');
-      guestNumberOne.removeAttribute('disabled', 'disabled');
+      guestNumberTwo.disabled = false;
+      guestNumberTwo.selected = true;
+      guestNumberOne.disabled = false;
       break;
 
     case '3':
-      guestNumberTwo.removeAttribute('disabled', 'disabled');
-      guestNumberOne.removeAttribute('disabled', 'disabled');
-      guestNumberThree.removeAttribute('disabled', 'disabled');
-      guestNumberThree.setAttribute('selected', 'selected');
+      guestNumberTwo.disabled = false;
+      guestNumberOne.disabled = false;
+      guestNumberThree.disabled = false;
+      guestNumberThree.selected = true;
       break;
 
     case '100':
-      guestNumberNull.removeAttribute('disabled', 'disabled');
-      guestNumberNull.setAttribute('selected', 'selected');
+      guestNumberNull.disabled = false;
+      guestNumberNull.selected = true;
       break;
 
     default:
-      guestNumberOne.setAttribute('selected', 'selected');
-      guestNumberOne.removeAttribute('disabled', 'disabled');
+      guestNumberOne.selected = true;
+      guestNumberOne.disabled = false;
   }
 }
 
@@ -103,7 +105,7 @@ const setupForm = function () {
   const timeInSelect = document.querySelector('#timein');
   const timeOutSelect = document.querySelector('#timeout');
   const typeSelect = document.querySelector('#type');
-  const roomsNumber = document.querySelector('#room_number');
+
 
   document.addEventListener('DOMContentLoaded', function(evt) {
     setupMinPrice(evt);
@@ -123,6 +125,10 @@ const setupForm = function () {
   });
 
   roomsNumber.addEventListener('change', function(evt) {
+    dependenceRoomGuest(evt);
+  });
+
+  document.addEventListener('DOMContentLoaded', function(evt) {
     dependenceRoomGuest(evt);
   });
 
