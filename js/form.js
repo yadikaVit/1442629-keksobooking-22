@@ -109,7 +109,6 @@ const setupForm = function () {
 
   document.addEventListener('DOMContentLoaded', function(evt) {
     setupMinPrice(evt);
-    dependenceRoomGuest(evt);
   });
 
   typeSelect.addEventListener('change', function(evt) {
