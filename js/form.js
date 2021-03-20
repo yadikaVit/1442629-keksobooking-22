@@ -4,15 +4,16 @@ const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 const priceInput = document.querySelector('#price');
+const typeSelect = document.querySelector('#type');
 
-const setupMinPrice = function (evt) {
+const setupMinPrice = function () {
 
   const addMinPrice = function (price) {
     priceInput.placeholder = price.toString();
     priceInput.setAttribute('min', price);
   };
 
-  switch (evt.target.value) {
+  switch (typeSelect.value) {
     case 'bungalow':
       addMinPrice(0);
       break;
@@ -63,7 +64,7 @@ const validityForm = function () {
 
 const roomsNumber = document.querySelector('#room_number');
 
-const dependenceRoomGuest = function () {
+const syncRoomGuest = function () {
   const guestsNumber = document.querySelector('#capacity');
   const guestNumberOne = guestsNumber.querySelector('option[value=\'1\']');
   const guestNumberTwo = guestsNumber.querySelector('option[value=\'2\']');
@@ -100,35 +101,41 @@ const dependenceRoomGuest = function () {
   }
 }
 
+const timeInSelect = document.querySelector('#timein');
+const timeOutSelect = document.querySelector('#timeout');
+
+const syncTimeInTimeOut = function () {
+  timeInSelect.value = timeOutSelect.value;
+}
+
+const syncTimeOutTimeIn = function () {
+  timeOutSelect.value = timeInSelect.value;
+}
 
 const setupForm = function () {
-  const timeInSelect = document.querySelector('#timein');
-  const timeOutSelect = document.querySelector('#timeout');
-  const typeSelect = document.querySelector('#type');
 
-
-  document.addEventListener('DOMContentLoaded', function(evt) {
-    setupMinPrice(evt);
+  document.addEventListener('DOMContentLoaded', function() {
+    setupMinPrice();
   });
 
-  typeSelect.addEventListener('change', function(evt) {
-    setupMinPrice(evt);
+  typeSelect.addEventListener('change', function() {
+    setupMinPrice();
   });
 
-  timeInSelect.addEventListener('change', function(evt) {
-    timeOutSelect.value = evt.target.value;
+  timeInSelect.addEventListener('change', function() {
+    syncTimeOutTimeIn();
   });
 
-  timeOutSelect.addEventListener('change', function(evt) {
-    timeInSelect.value = evt.target.value;
+  timeOutSelect.addEventListener('change', function() {
+    syncTimeInTimeOut();
   });
 
-  roomsNumber.addEventListener('change', function(evt) {
-    dependenceRoomGuest(evt);
+  roomsNumber.addEventListener('change', function() {
+    syncRoomGuest();
   });
 
-  document.addEventListener('DOMContentLoaded', function(evt) {
-    dependenceRoomGuest(evt);
+  document.addEventListener('DOMContentLoaded', function() {
+    syncRoomGuest();
   });
 
   validityForm();
