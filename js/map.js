@@ -1,6 +1,6 @@
-export {mapInitialize, disableForm};
+export {mapInitialize, disableForm, renderOfferOnMap};
 import {renderOffer} from './popup.js';
-import {getArrayOffersNearby} from './data.js';
+import {getServerOffers} from './server.js';
 
 const disableElements = function (arrayElements) {
   arrayElements.forEach(function (arrayElement) {
@@ -38,7 +38,7 @@ const mapInitialize = function () {
     activateElements(adFormElements);
     mapFilterForm.classList.remove('map__filters--disabled');
     activateElements(mapFilterItems);
-    renderOfferOnMap(getArrayOffersNearby());
+    getServerOffers();
   })
     .setView({
       lat: 35.6895000,
@@ -87,8 +87,8 @@ const renderOfferOnMap = function(array) {
 
     const marker = L.marker(
       {
-        lat: item.location.x,
-        lng: item.location.y,
+        lat: item.location.lat,
+        lng: item.location.lng,
       },
       {
         icon,
