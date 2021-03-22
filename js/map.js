@@ -1,4 +1,4 @@
-export {mapInitialize, disableForm, renderOfferOnMap};
+export {mapInitialize, disableForm};
 import {renderOffer} from './popup.js';
 import {getServerOffers} from './server.js';
 
@@ -38,7 +38,7 @@ const mapInitialize = function () {
     activateElements(adFormElements);
     mapFilterForm.classList.remove('map__filters--disabled');
     activateElements(mapFilterItems);
-    getServerOffers();
+    getServerOffers(renderOfferOnMap);
   })
     .setView({
       lat: 35.6895000,

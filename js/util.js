@@ -1,4 +1,4 @@
-export {getRandomIntInclusive, getRandomFloatInclusive, getRandomArrayElement, getRandomArrayLength, removeDuplicates};
+export {getRandomIntInclusive, getRandomFloatInclusive, getRandomArrayElement, getRandomArrayLength, removeDuplicates, isEscEvent};
 
 const getRandomFloatInclusive = (min, max, n) => {
   if (min < 0 || max < 0 || min > max) {
@@ -34,4 +34,8 @@ const removeDuplicates = (ArrayWithDuplicates) => {
     }
   }
   return result;
+};
+
+const isEscEvent = (evt) => {
+  return evt.key === 'Escape' || evt.key === 'Esc';
 };
