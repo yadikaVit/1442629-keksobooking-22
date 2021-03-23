@@ -1,8 +1,10 @@
-export {setupForm};
+export {setupForm, showSuccessMessage, showErrorMessage, showAlert};
+import {isEscEvent} from './util.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
+const ALERT_SHOW_TIME = 5000;
 const priceInput = document.querySelector('#price');
 const typeSelect = document.querySelector('#type');
 
@@ -140,3 +142,83 @@ const setupForm = function () {
 
   validityForm();
 }
+
+
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = 100;
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = 0;
+  alertContainer.style.top = '30px';
+  alertContainer.style.right = 0;
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'orange';
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
+}
+
+const adForm = document.querySelector('.ad-form');
+
+const resetButton = adForm.querySelector('.ad-form__reset');
+resetButton.addEventListener('click', function() {
+  adForm.reset();
+});
+
+const main = document.querySelector('.main');
+const successTemplate = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+
+const showSuccessMessage = function () {
+  const newMainSuccessElement = successTemplate.cloneNode(true);
+  main.appendChild(newMainSuccessElement);
+
+
+  const onDocumentEscKeydown = function (evt) {
+    if (isEscEvent(evt)) {
+      evt.preventDefault();
+      newMainSuccessElement.remove();
+      document.removeEventListener('keydown', onDocumentEscKeydown);
+    }
+  };
+
+  const onDocumentClick = function () {
+    newMainSuccessElement.remove();
+    document.removeEventListener('click', onDocumentClick);
+  };
+
+  document.addEventListener('keydown', onDocumentEscKeydown);
+  document.addEventListener('click', onDocumentClick);
+};
+
+const errorTemplate = document.querySelector('#error')
+  .content
+  .querySelector('.error');
+
+const showErrorMessage = function () {
+  const newMainErrorElement = errorTemplate.cloneNode(true);
+  main.appendChild(newMainErrorElement);
+
+  const onDocumentEscKeydown = function (evt) {
+    if (isEscEvent(evt)) {
+      evt.preventDefault();
+      newMainErrorElement.remove();
+      document.removeEventListener('keydown', onDocumentEscKeydown);
+    }
+  };
+
+  const onDocumentClick = function () {
+    newMainErrorElement.remove();
+    document.removeEventListener('click', onDocumentClick);
+  };
+
+  document.addEventListener('keydown', onDocumentEscKeydown);
+  document.addEventListener('click', onDocumentClick);
+};

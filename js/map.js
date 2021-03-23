@@ -1,6 +1,6 @@
 export {mapInitialize, disableForm};
 import {renderOffer} from './popup.js';
-import {getServerOffers} from './server.js';
+import {getServerOffers, setUserFormSubmit} from './server.js';
 
 const disableElements = function (arrayElements) {
   arrayElements.forEach(function (arrayElement) {
@@ -39,6 +39,7 @@ const mapInitialize = function () {
     mapFilterForm.classList.remove('map__filters--disabled');
     activateElements(mapFilterItems);
     getServerOffers(renderOfferOnMap);
+    setUserFormSubmit();
   })
     .setView({
       lat: 35.6895000,
