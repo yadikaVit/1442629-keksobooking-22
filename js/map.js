@@ -1,6 +1,11 @@
-export {mapInitialize, disableForm};
+export {mapInitialize, disableForm, resetCoordinates};
 import {renderOffer} from './popup.js';
-import {getArrayOffersNearby} from './data.js';
+import {getServerOffers} from './server.js';
+import {showAlert, setUserFormSubmit} from './form.js';
+
+const COORDINATE_MAIN_PIN_X = 35.68951;
+const COORDINATE_MAIN_PIN_Y = 139.69171;
+
 
 const disableElements = function (arrayElements) {
   arrayElements.forEach(function (arrayElement) {
@@ -28,9 +33,8 @@ const disableForm = function () {
 };
 
 
-
+const pinLocation = document.querySelector('#address');
 const mapInitialize = function () {
-  const pinLocation = document.querySelector('#address');
   pinLocation.readOnly = true;
 
   map.on('load', () => {
@@ -38,11 +42,13 @@ const mapInitialize = function () {
     activateElements(adFormElements);
     mapFilterForm.classList.remove('map__filters--disabled');
     activateElements(mapFilterItems);
-    renderOfferOnMap(getArrayOffersNearby());
+    fillInAdressCoordinatesPin(mainPinMarker);
+    getServerOffers(renderOfferOnMap, showAlert);
+    setUserFormSubmit();
   })
     .setView({
-      lat: 35.6895000,
-      lng: 139.6917100,
+      lat: COORDINATE_MAIN_PIN_X,
+      lng: COORDINATE_MAIN_PIN_Y,
     }, 12);
 
   L.tileLayer(
@@ -51,30 +57,37 @@ const mapInitialize = function () {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
   ).addTo(map);
+};
 
-  const mainPinIcon = L.icon({
-    iconUrl: 'img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-  });
+const mainPinIcon = L.icon({
+  iconUrl: 'img/main-pin.svg',
+  iconSize: [52, 52],
+  iconAnchor: [26, 52],
+});
 
-  const mainPinMarker = L.marker(
-    {
-      lat: 35.6895000,
-      lng: 139.6917100,
-    },
-    {
-      draggable: true,
-      icon: mainPinIcon,
-    },
-  );
-  pinLocation.value = mainPinMarker.getLatLng().lat.toFixed(5) + ', ' + mainPinMarker.getLatLng().lng.toFixed(5);
-  mainPinMarker.addTo(map);
+const mainPinMarker = L.marker(
+  {
+    lat: COORDINATE_MAIN_PIN_X,
+    lng: COORDINATE_MAIN_PIN_Y,
+  },
+  {
+    draggable: true,
+    icon: mainPinIcon,
+  },
+).addTo(map);
+
+const fillInAdressCoordinatesPin = function (pin) {
+  pinLocation.value = pin.getLatLng().lat.toFixed(5) + ', ' + pin.getLatLng().lng.toFixed(5);
+};
+
+mainPinMarker.on('moveend', (evt) => {
+  fillInAdressCoordinatesPin(evt.target)
+});
 
 
-  mainPinMarker.on('moveend', (evt) => {
-    pinLocation.value = evt.target.getLatLng().lat.toFixed(5) + ', ' + evt.target.getLatLng().lng.toFixed(5);
-  });
+const resetCoordinates = function () {
+  mainPinMarker.setLatLng([COORDINATE_MAIN_PIN_X, COORDINATE_MAIN_PIN_Y]);
+  pinLocation.value = COORDINATE_MAIN_PIN_X + ', ' + COORDINATE_MAIN_PIN_Y;
 };
 
 const renderOfferOnMap = function(array) {
@@ -87,8 +100,8 @@ const renderOfferOnMap = function(array) {
 
     const marker = L.marker(
       {
-        lat: item.location.x,
-        lng: item.location.y,
+        lat: item.location.lat,
+        lng: item.location.lng,
       },
       {
         icon,

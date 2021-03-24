@@ -11,3 +11,6 @@ setupForm();
 
 disableForm ();
 mapInitialize();
+
+
+import './server.js';
