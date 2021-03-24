@@ -1,5 +1,7 @@
-export {setupForm, showSuccessMessage, showErrorMessage, showAlert};
+export {setupForm, setUserFormSubmit, showAlert};
 import {isEscEvent} from './util.js';
+import {sendData} from './server.js';
+import {resetCoordinates} from './map.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -141,8 +143,19 @@ const setupForm = function () {
   });
 
   validityForm();
+  clickResetButton();
 }
 
+const clickResetButton = function () {
+  const resetButton = adForm.querySelector('.ad-form__reset');
+
+  resetButton.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    adForm.reset();
+    syncRoomGuest();
+    resetCoordinates();
+  });
+}
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -166,10 +179,28 @@ const showAlert = (message) => {
 
 const adForm = document.querySelector('.ad-form');
 
-const resetButton = adForm.querySelector('.ad-form__reset');
-resetButton.addEventListener('click', function() {
+const setUserFormSubmit = () => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const formData = new FormData(evt.target);
+
+    sendData(
+      () => successPostForm(),
+      () => showErrorMessage(),
+      formData,
+    );
+  });
+};
+
+
+const successPostForm = function () {
+  showSuccessMessage();
   adForm.reset();
-});
+  syncRoomGuest();
+  setupForm();
+  resetCoordinates();
+};
 
 const main = document.querySelector('.main');
 const successTemplate = document.querySelector('#success')
