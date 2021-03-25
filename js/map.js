@@ -2,7 +2,8 @@ export {mapInitialize, disableForm, resetCoordinates};
 import {renderOffer} from './popup.js';
 import {getServerOffers} from './server.js';
 import {showAlert, setUserFormSubmit} from './form.js';
-import {sortOffers, getOfferRank, setType} from './filter.js';
+import {setType} from './filter.js';
+import { setupFilter } from './filter.js';
 
 
 const COORDINATE_MAIN_PIN_X = 35.68951;
@@ -27,6 +28,7 @@ const adFormElements = adForm.querySelectorAll('fieldset');
 const mapFilterForm = document.querySelector('.map__filters');
 const mapFilterItems = mapFilterForm.querySelectorAll('.map__filter, .map__features');
 const map = L.map('map-canvas')
+let offersCache = []
 
 const disableForm = function () {
   adForm.classList.add('ad-form--disabled');
@@ -35,14 +37,6 @@ const disableForm = function () {
   disableElements(mapFilterItems);
 };
 
-
-const showFilterOffers = function (offers) {
-  renderOfferOnMap(offers);
-  setType(() => {
-    clearMarkers();
-    renderOfferOnMap(offers);
-  });
-}
 
 const pinLocation = document.querySelector('#address');
 const mapInitialize = function () {
@@ -54,13 +48,13 @@ const mapInitialize = function () {
     mapFilterForm.classList.remove('map__filters--disabled');
     activateElements(mapFilterItems);
     fillInAdressCoordinatesPin(mainPinMarker);
-    getServerOffers(showFilterOffers, showAlert)
+    getServerOffers(cacheOffers, showAlert);
     setUserFormSubmit();
   })
     .setView({
       lat: COORDINATE_MAIN_PIN_X,
       lng: COORDINATE_MAIN_PIN_Y,
-    }, 12);
+    }, 10);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -106,14 +100,23 @@ const clearMarkers = () => {
   markers.clearLayers();
 };
 
-const renderOfferOnMap = function(array) {
-  array
-    .slice()
-    .sort(sortOffers)
-    .filter((offer) => getOfferRank(offer) >= 1)
-    .slice(0, OFFERS_COUNT);
+const cacheOffers = function(offers) {
+  offersCache = offers;
+  renderOfferOnMap();
+  setupFilter(reloadMarkers);
+}
 
-  array.forEach((item) => {
+const reloadMarkers = function() {
+  clearMarkers();
+  renderOfferOnMap();
+}
+
+const renderOfferOnMap = function() {
+  const sliceoffers = offersCache.slice();
+  const filteroffers = sliceoffers.filter(setType);
+  filteroffers.slice(0, OFFERS_COUNT);
+
+  filteroffers.forEach((item) => {
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [40, 40],

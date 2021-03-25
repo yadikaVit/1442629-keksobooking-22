@@ -1,32 +1,17 @@
-export {sortOffers, getOfferRank, setType};
+export {setType, setupFilter};
 
 const filterHousingType = document.querySelector('#housing-type');
 
+let filter = 'any';
 
-const setType = (cb) => {
+const setupFilter = function(onChangeFilter) {
   filterHousingType.addEventListener('change', (evt) => {
-    filterHousingType.value = evt.target.value;
-    cb();
+    filter = evt.target.value;
+    onChangeFilter()
   });
-};
-
-
-const getOfferRank = ({offer}) => {
-  let rank = 0;
-  if (filterHousingType.value === 'any') {
-    rank += 1;
-  } else if (offer.type === filterHousingType.value) {
-    rank += 1;
-  }
-
-  return rank;
-};
-
-
-const sortOffers = (offerA, offerB) => {
-  const rankA = getOfferRank(offerA);
-  const rankB = getOfferRank(offerB);
-
-  return rankB - rankA;
 }
+
+const setType = function(oldOffer) {
+  return filter === oldOffer.offer.type || filter === 'any';
+};
 

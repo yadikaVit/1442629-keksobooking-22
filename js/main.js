@@ -13,7 +13,3 @@ setupForm();
 
 disableForm ();
 mapInitialize();
-
-
-
-
