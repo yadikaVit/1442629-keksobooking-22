@@ -2,9 +2,12 @@ export {mapInitialize, disableForm, resetCoordinates};
 import {renderOffer} from './popup.js';
 import {getServerOffers} from './server.js';
 import {showAlert, setUserFormSubmit} from './form.js';
+import {sortOffers, getOfferRank, setType} from './filter.js';
+
 
 const COORDINATE_MAIN_PIN_X = 35.68951;
 const COORDINATE_MAIN_PIN_Y = 139.69171;
+const OFFERS_COUNT = 10;
 
 
 const disableElements = function (arrayElements) {
@@ -33,6 +36,14 @@ const disableForm = function () {
 };
 
 
+const showFilterOffers = function (offers) {
+  renderOfferOnMap(offers);
+  setType(() => {
+    clearMarkers();
+    renderOfferOnMap(offers);
+  });
+}
+
 const pinLocation = document.querySelector('#address');
 const mapInitialize = function () {
   pinLocation.readOnly = true;
@@ -43,7 +54,7 @@ const mapInitialize = function () {
     mapFilterForm.classList.remove('map__filters--disabled');
     activateElements(mapFilterItems);
     fillInAdressCoordinatesPin(mainPinMarker);
-    getServerOffers(renderOfferOnMap, showAlert);
+    getServerOffers(showFilterOffers, showAlert)
     setUserFormSubmit();
   })
     .setView({
@@ -90,7 +101,18 @@ const resetCoordinates = function () {
   pinLocation.value = COORDINATE_MAIN_PIN_X + ', ' + COORDINATE_MAIN_PIN_Y;
 };
 
+const markers = new L.LayerGroup().addTo(map);
+const clearMarkers = () => {
+  markers.clearLayers();
+};
+
 const renderOfferOnMap = function(array) {
+  array
+    .slice()
+    .sort(sortOffers)
+    .filter((offer) => getOfferRank(offer) >= 1)
+    .slice(0, OFFERS_COUNT);
+
   array.forEach((item) => {
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
@@ -109,7 +131,7 @@ const renderOfferOnMap = function(array) {
     );
 
     marker
-      .addTo(map)
+      .addTo(markers)
       .bindPopup(
         renderOffer(item),
         {
@@ -118,3 +140,4 @@ const renderOfferOnMap = function(array) {
       );
   });
 }
+
