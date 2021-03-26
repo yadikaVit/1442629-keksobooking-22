@@ -1,7 +1,5 @@
 export {getServerOffers, sendData};
 
-const OFFERS_COUNT = 10;
-
 const getServerOffers = function (onSuccess, onFail) {
   return fetch('https://22.javascript.pages.academy/keksobooking/data')
 
@@ -12,7 +10,7 @@ const getServerOffers = function (onSuccess, onFail) {
     })
 
     .then((offers) => {
-      onSuccess(offers.slice(0, OFFERS_COUNT));
+      onSuccess(offers);
     })
     .catch(() => {
       onFail('Не удалось загрузить объявления поблизости. Перезагузите страницу');

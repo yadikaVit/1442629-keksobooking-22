@@ -186,15 +186,14 @@ const setUserFormSubmit = () => {
     const formData = new FormData(evt.target);
 
     sendData(
-      () => successPostForm(),
+      () => onSuccessPostForm(),
       () => showErrorMessage(),
       formData,
     );
   });
 };
 
-
-const successPostForm = function () {
+const onSuccessPostForm = function () {
   showSuccessMessage();
   adForm.reset();
   syncRoomGuest();

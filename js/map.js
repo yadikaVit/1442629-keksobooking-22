@@ -2,10 +2,11 @@ export {mapInitialize, disableForm, resetCoordinates};
 import {renderOffer} from './popup.js';
 import {getServerOffers} from './server.js';
 import {showAlert, setUserFormSubmit} from './form.js';
+import {typeFilter, setupFilter} from './filter.js';
 
 const COORDINATE_MAIN_PIN_X = 35.68951;
 const COORDINATE_MAIN_PIN_Y = 139.69171;
-
+const OFFERS_COUNT = 10;
 
 const disableElements = function (arrayElements) {
   arrayElements.forEach(function (arrayElement) {
@@ -24,6 +25,7 @@ const adFormElements = adForm.querySelectorAll('fieldset');
 const mapFilterForm = document.querySelector('.map__filters');
 const mapFilterItems = mapFilterForm.querySelectorAll('.map__filter, .map__features');
 const map = L.map('map-canvas')
+let cachedOffers = []
 
 const disableForm = function () {
   adForm.classList.add('ad-form--disabled');
@@ -43,13 +45,13 @@ const mapInitialize = function () {
     mapFilterForm.classList.remove('map__filters--disabled');
     activateElements(mapFilterItems);
     fillInAdressCoordinatesPin(mainPinMarker);
-    getServerOffers(renderOfferOnMap, showAlert);
+    getServerOffers(cacheOffers, showAlert);
     setUserFormSubmit();
   })
     .setView({
       lat: COORDINATE_MAIN_PIN_X,
       lng: COORDINATE_MAIN_PIN_Y,
-    }, 12);
+    }, 10);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -90,8 +92,28 @@ const resetCoordinates = function () {
   pinLocation.value = COORDINATE_MAIN_PIN_X + ', ' + COORDINATE_MAIN_PIN_Y;
 };
 
-const renderOfferOnMap = function(array) {
-  array.forEach((item) => {
+const markers = new L.LayerGroup().addTo(map);
+const clearMarkers = () => {
+  markers.clearLayers();
+};
+
+const cacheOffers = function(offers) {
+  cachedOffers = offers;
+  renderOffersOnMap();
+  setupFilter(reloadMarkers);
+}
+
+const reloadMarkers = function() {
+  clearMarkers();
+  renderOffersOnMap();
+}
+
+const renderOffersOnMap = function() {
+  const sliceOffers = [...cachedOffers];
+  const filterOffers = sliceOffers.filter(typeFilter);
+  filterOffers.slice(0, OFFERS_COUNT);
+
+  filterOffers.forEach((item) => {
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [40, 40],
@@ -109,7 +131,7 @@ const renderOfferOnMap = function(array) {
     );
 
     marker
-      .addTo(map)
+      .addTo(markers)
       .bindPopup(
         renderOffer(item),
         {
@@ -118,3 +140,4 @@ const renderOfferOnMap = function(array) {
       );
   });
 }
+
