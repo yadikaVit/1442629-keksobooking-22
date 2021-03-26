@@ -2,14 +2,11 @@ export {mapInitialize, disableForm, resetCoordinates};
 import {renderOffer} from './popup.js';
 import {getServerOffers} from './server.js';
 import {showAlert, setUserFormSubmit} from './form.js';
-import {setType} from './filter.js';
-import { setupFilter } from './filter.js';
-
+import {typeFilter, setupFilter} from './filter.js';
 
 const COORDINATE_MAIN_PIN_X = 35.68951;
 const COORDINATE_MAIN_PIN_Y = 139.69171;
 const OFFERS_COUNT = 10;
-
 
 const disableElements = function (arrayElements) {
   arrayElements.forEach(function (arrayElement) {
@@ -28,7 +25,7 @@ const adFormElements = adForm.querySelectorAll('fieldset');
 const mapFilterForm = document.querySelector('.map__filters');
 const mapFilterItems = mapFilterForm.querySelectorAll('.map__filter, .map__features');
 const map = L.map('map-canvas')
-let offersCache = []
+let cachedOffers = []
 
 const disableForm = function () {
   adForm.classList.add('ad-form--disabled');
@@ -101,22 +98,22 @@ const clearMarkers = () => {
 };
 
 const cacheOffers = function(offers) {
-  offersCache = offers;
-  renderOfferOnMap();
+  cachedOffers = offers;
+  renderOffersOnMap();
   setupFilter(reloadMarkers);
 }
 
 const reloadMarkers = function() {
   clearMarkers();
-  renderOfferOnMap();
+  renderOffersOnMap();
 }
 
-const renderOfferOnMap = function() {
-  const sliceoffers = offersCache.slice();
-  const filteroffers = sliceoffers.filter(setType);
-  filteroffers.slice(0, OFFERS_COUNT);
+const renderOffersOnMap = function() {
+  const sliceOffers = [...cachedOffers];
+  const filterOffers = sliceOffers.filter(typeFilter);
+  filterOffers.slice(0, OFFERS_COUNT);
 
-  filteroffers.forEach((item) => {
+  filterOffers.forEach((item) => {
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [40, 40],

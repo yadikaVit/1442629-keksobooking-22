@@ -1,6 +1,5 @@
 export {getServerOffers, sendData};
 
-
 const getServerOffers = function (onSuccess, onFail) {
   return fetch('https://22.javascript.pages.academy/keksobooking/data')
 

@@ -1,4 +1,4 @@
-export {setType, setupFilter};
+export {typeFilter, setupFilter};
 
 const filterHousingType = document.querySelector('#housing-type');
 
@@ -11,7 +11,7 @@ const setupFilter = function(onChangeFilter) {
   });
 }
 
-const setType = function(oldOffer) {
+const typeFilter = function(oldOffer) {
   return filter === oldOffer.offer.type || filter === 'any';
 };
 

@@ -10,6 +10,5 @@ import {mapInitialize, disableForm} from './map.js'
 import {setupForm} from './form.js';
 
 setupForm();
-
 disableForm ();
 mapInitialize();

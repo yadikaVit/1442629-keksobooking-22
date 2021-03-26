@@ -193,7 +193,6 @@ const setUserFormSubmit = () => {
   });
 };
 
-
 const onSuccessPostForm = function () {
   showSuccessMessage();
   adForm.reset();
