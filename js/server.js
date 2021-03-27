@@ -1,3 +1,5 @@
+'use strict';
+
 export {getServerOffers, sendData};
 
 const getServerOffers = function (onSuccess, onFail) {

@@ -1,3 +1,5 @@
+'use strict';
+
 export {getRandomIntInclusive, getRandomFloatInclusive, getRandomArrayElement, getRandomArrayLength, removeDuplicates, isEscEvent};
 
 const getRandomFloatInclusive = (min, max, n) => {

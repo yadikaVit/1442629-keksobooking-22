@@ -1,12 +1,18 @@
+'use strict';
+
 export {mapInitialize, disableForm, resetCoordinates};
 import {renderOffer} from './popup.js';
 import {getServerOffers} from './server.js';
 import {showAlert, setUserFormSubmit} from './form.js';
-import {typeFilter, setupFilter} from './filter.js';
+import {offerFilter, setupFilters} from './filter.js';
 
 const COORDINATE_MAIN_PIN_X = 35.68951;
 const COORDINATE_MAIN_PIN_Y = 139.69171;
 const OFFERS_COUNT = 10;
+const RERENDER_DELAY = 500;
+
+/* global L:readonly */
+/* global _:readonly */
 
 const disableElements = function (arrayElements) {
   arrayElements.forEach(function (arrayElement) {
@@ -19,7 +25,7 @@ const activateElements = function (arrayElements) {
     arrayElement.removeAttribute('disabled', 'disabled');
   });
 }
-/* global L:readonly */
+
 const adForm = document.querySelector('.ad-form');
 const adFormElements = adForm.querySelectorAll('fieldset');
 const mapFilterForm = document.querySelector('.map__filters');
@@ -33,7 +39,6 @@ const disableForm = function () {
   mapFilterForm.classList.add('map__filters--disabled');
   disableElements(mapFilterItems);
 };
-
 
 const pinLocation = document.querySelector('#address');
 const mapInitialize = function () {
@@ -100,18 +105,19 @@ const clearMarkers = () => {
 const cacheOffers = function(offers) {
   cachedOffers = offers;
   renderOffersOnMap();
-  setupFilter(reloadMarkers);
+  setupFilters(reloadMarkers);
 }
 
-const reloadMarkers = function() {
+const reloadMarkers = _.debounce(function() {
   clearMarkers();
   renderOffersOnMap();
-}
+}, RERENDER_DELAY);
 
 const renderOffersOnMap = function() {
   const sliceOffers = [...cachedOffers];
-  const filterOffers = sliceOffers.filter(typeFilter);
-  filterOffers.slice(0, OFFERS_COUNT);
+  const filterOffers = sliceOffers
+    .filter(offerFilter)
+    .slice(0, OFFERS_COUNT);
 
   filterOffers.forEach((item) => {
     const icon = L.icon({
