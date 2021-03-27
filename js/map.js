@@ -31,7 +31,7 @@ const adFormElements = adForm.querySelectorAll('fieldset');
 const mapFilterForm = document.querySelector('.map__filters');
 const mapFilterItems = mapFilterForm.querySelectorAll('.map__filter, .map__features');
 const map = L.map('map-canvas')
-let cachedOffers = []
+const cachedOffers = []
 
 const disableForm = function () {
   adForm.classList.add('ad-form--disabled');
