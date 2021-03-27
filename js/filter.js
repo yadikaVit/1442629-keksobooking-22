@@ -11,23 +11,19 @@ const filterHousingGuests = document.querySelector('#housing-guests');
 const filterHousingFeatures = document.querySelector('#housing-features');
 
 const setupFilters = function(onChangeFilter) {
-  filterHousingType.addEventListener('change', (evt) => {
-    filterHousingType.value = evt.target.value;
+  filterHousingType.addEventListener('change', () => {
     onChangeFilter()
   })
 
-  filterHousingRooms.addEventListener('change', (evt) => {
-    filterHousingRooms.value = evt.target.value;
+  filterHousingRooms.addEventListener('change', () => {
     onChangeFilter()
   })
 
-  filterHousingGuests.addEventListener('change', (evt) => {
-    filterHousingGuests.value = evt.target.value;
+  filterHousingGuests.addEventListener('change', () => {
     onChangeFilter()
   })
 
-  filterHousingPrice.addEventListener('change', (evt) => {
-    filterHousingPrice.value = evt.target.value;
+  filterHousingPrice.addEventListener('change', () => {
     onChangeFilter()
   })
 
@@ -36,42 +32,42 @@ const setupFilters = function(onChangeFilter) {
   })
 };
 
-const offerFilter = function(allOffer) {
-  const filteredByHouseType = typeFilter(allOffer);
-  const filteredByPrice = priceFilter(allOffer);
-  const filteredByRoom = roomFilter(allOffer);
-  const filteredByGuest = guestFilter(allOffer);
-  const filteredByfeature = featuresFilter(allOffer);
-  return filteredByHouseType && filteredByPrice && filteredByRoom && filteredByGuest && filteredByfeature;
+const offerFilter = function(offer) {
+  const filteredByHouseType = typeFilter(offer);
+  const filteredByPrice = priceFilter(offer);
+  const filteredByRoom = roomFilter(offer);
+  const filteredByGuest = guestFilter(offer);
+  const filteredByFeature = featuresFilter(offer);
+  return filteredByHouseType && filteredByPrice && filteredByRoom && filteredByGuest && filteredByFeature;
 };
 
-const typeFilter = function(allOffer) {
-  return filterHousingType.value === allOffer.offer.type || filterHousingType.value === 'any';
+const typeFilter = function(offer) {
+  return filterHousingType.value === offer.offer.type || filterHousingType.value === 'any';
 };
 
-const priceFilter = (allOffer) => {
+const priceFilter = (offer) => {
   switch (filterHousingPrice.value) {
     case 'low':
-      return allOffer.offer.price < LOW_PRICE;
+      return offer.offer.price < LOW_PRICE;
     case 'middle':
-      return allOffer.offer.price >= LOW_PRICE && allOffer.offer.price < HIGH_PRICE;
+      return offer.offer.price >= LOW_PRICE && offer.offer.price < HIGH_PRICE;
     case 'high':
-      return allOffer.offer.price >= HIGH_PRICE;
+      return offer.offer.price >= HIGH_PRICE;
     default:
       return filterHousingPrice.value === 'any';
   }
 };
 
-const roomFilter = function(allOffer) {
-  return Number(filterHousingRooms.value) === allOffer.offer.rooms || filterHousingRooms.value === 'any';
+const roomFilter = function(offer) {
+  return Number(filterHousingRooms.value) === offer.offer.rooms || filterHousingRooms.value === 'any';
 };
 
-const guestFilter = function(allOffer) {
-  return Number(filterHousingGuests.value) === allOffer.offer.guests || filterHousingGuests.value === 'any';
+const guestFilter = function(offer) {
+  return Number(filterHousingGuests.value) === offer.offer.guests || filterHousingGuests.value === 'any';
 };
 
-function featuresFilter(allOffers) {
-  let selectedFeatures = [];
+function featuresFilter(offers) {
+  const selectedFeatures = [];
   const featuresInput = filterHousingFeatures.querySelectorAll('[name="features"]')
 
   featuresInput.forEach(feature => {
@@ -81,11 +77,10 @@ function featuresFilter(allOffers) {
     }
   });
 
-  if (selectedFeatures.length == 0) {
+  if (selectedFeatures.length === 0) {
     return true;
   }
 
-  const reducer = (accumulator, feature) => accumulator && allOffers.offer.features.includes(feature);
-  const featureReduce = selectedFeatures.reduce(reducer, true);
-  return featureReduce;
+  const reducer = (accumulator, feature) => accumulator && offers.offer.features.includes(feature);
+  return selectedFeatures.reduce(reducer, true);
 }
