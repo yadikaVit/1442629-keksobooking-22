@@ -1,3 +1,5 @@
+'use strict';
+
 import {getRandomIntInclusive, getRandomFloatInclusive, getRandomArrayElement, getRandomArrayLength, removeDuplicates} from './util.js';
 export {getArrayOffersNearby};
 

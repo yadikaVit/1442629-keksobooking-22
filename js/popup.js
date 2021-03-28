@@ -1,3 +1,5 @@
+'use strict';
+
 export {renderOffer};
 
 const cardTemplate = document.querySelector('#card')

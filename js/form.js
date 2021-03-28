@@ -1,3 +1,5 @@
+'use strict';
+
 export {setupForm, setUserFormSubmit, showAlert};
 import {isEscEvent} from './util.js';
 import {sendData} from './server.js';
