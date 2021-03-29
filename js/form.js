@@ -9,6 +9,10 @@ const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 const ALERT_SHOW_TIME = 5000;
+const PRICE_BUNGALOW = 0;
+const PRICE_FLAT = 1000;
+const PRICE_HOUSE = 5000;
+const PRICE_PALACE = 10000;
 const priceInput = document.querySelector('#price');
 const typeSelect = document.querySelector('#type');
 
@@ -21,19 +25,19 @@ const setupMinPrice = function () {
 
   switch (typeSelect.value) {
     case 'bungalow':
-      addMinPrice(0);
+      addMinPrice(PRICE_BUNGALOW);
       break;
     case 'flat':
-      addMinPrice(1000);
+      addMinPrice(PRICE_FLAT);
       break;
     case 'house':
-      addMinPrice(5000);
+      addMinPrice(PRICE_HOUSE);
       break;
     case 'palace':
-      addMinPrice(10000);
+      addMinPrice(PRICE_PALACE);
       break;
     default:
-      addMinPrice(1000);
+      addMinPrice(PRICE_FLAT);
       break;
   }
 };
@@ -42,7 +46,7 @@ const setupMinPrice = function () {
 const validityForm = function () {
   const offerTitle = document.querySelector('#title');
 
-  offerTitle.addEventListener('input', () => {
+  offerTitle.addEventListener('input', function() {
     const valueLength = offerTitle.value.length;
 
     if (valueLength < MIN_TITLE_LENGTH) {
@@ -56,7 +60,7 @@ const validityForm = function () {
     offerTitle.reportValidity();
   });
 
-  priceInput.addEventListener('input', () => {
+  priceInput.addEventListener('input', function() {
     const valuePrice = priceInput.value;
     if (valuePrice > MAX_PRICE) {
       priceInput.setCustomValidity('Цена не должна превышать' + MAX_PRICE);
@@ -146,6 +150,7 @@ const setupForm = function () {
 
   validityForm();
   clickResetButton();
+  setupMinPrice();
 }
 
 const clickResetButton = function () {
@@ -154,18 +159,19 @@ const clickResetButton = function () {
   resetButton.addEventListener('click', function(evt) {
     evt.preventDefault();
     adForm.reset();
+    setupMinPrice();
     syncRoomGuest();
     resetCoordinates();
   });
 }
 
-const showAlert = (message) => {
+const showAlert = function (message) {
   const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = 100;
+  alertContainer.style.zIndex = '100';
   alertContainer.style.position = 'absolute';
-  alertContainer.style.left = 0;
+  alertContainer.style.left = '0';
   alertContainer.style.top = '30px';
-  alertContainer.style.right = 0;
+  alertContainer.style.right = '0';
   alertContainer.style.padding = '10px 3px';
   alertContainer.style.fontSize = '30px';
   alertContainer.style.textAlign = 'center';
@@ -174,15 +180,15 @@ const showAlert = (message) => {
 
   document.body.append(alertContainer);
 
-  setTimeout(() => {
+  setTimeout(function() {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
 }
 
 const adForm = document.querySelector('.ad-form');
 
-const setUserFormSubmit = () => {
-  adForm.addEventListener('submit', (evt) => {
+const setUserFormSubmit = function() {
+  adForm.addEventListener('submit', function(evt) {
     evt.preventDefault();
 
     const formData = new FormData(evt.target);

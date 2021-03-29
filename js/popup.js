@@ -34,6 +34,47 @@ const createPhotosFragment = function (photos) {
   return photosFragment;
 };
 
+const showFeatureIcons = function (features) {
+  const featureList = cardTemplate.querySelector('.popup__features');
+
+  if (features.length === 0) {
+    featureList.classList.add('visually-hidden');
+  }
+  else {
+    features.forEach((feature) => {
+      featureList.querySelector('.popup__feature--wifi').classList.add('visually-hidden');
+      featureList.querySelector('.popup__feature--dishwasher').classList.add('visually-hidden');
+      featureList.querySelector('.popup__feature--parking').classList.add('visually-hidden');
+      featureList.querySelector('.popup__feature--washer').classList.add('visually-hidden');
+      featureList.querySelector('.popup__feature--elevator').classList.add('visually-hidden');
+      featureList.querySelector('.popup__feature--conditioner').classList.add('visually-hidden');
+      switch (feature) {
+        case 'wifi':
+          featureList.querySelector('.popup__feature--wifi').classList.remove('visually-hidden');
+          break;
+        case 'dishwasher':
+          featureList.querySelector('.popup__feature--dishwasher').classList.remove('visually-hidden');
+          break;
+        case 'parking':
+          featureList.querySelector('.popup__feature--parking').classList.remove('visually-hidden');
+          break;
+        case 'washer':
+          featureList.querySelector('.popup__feature--washer').classList.remove('visually-hidden');
+          break;
+        case 'elevator':
+          featureList.querySelector('.popup__feature--elevator').classList.remove('visually-hidden');
+          break;
+        case 'conditioner':
+          featureList.querySelector('.popup__feature--conditioner').classList.remove('visually-hidden');
+          break;
+      }
+      return features;
+    });
+  }
+}
+
+
+
 const renderOffer = function ({offer, author}) {
   const offersElement = cardTemplate.cloneNode(true);
 
@@ -43,11 +84,10 @@ const renderOffer = function ({offer, author}) {
   offersElement.querySelector('.popup__type').textContent = translateType(offer.type);
   offersElement.querySelector('.popup__text--capacity').textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
   offersElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
-  offersElement.querySelector('.popup__features').textContent = offer.features;
   offersElement.querySelector('.popup__description').textContent = offer.description;
   offersElement.querySelector('.popup__photos').removeChild(offersElement.querySelector('.popup__photo'));
   offersElement.querySelector('.popup__photos').appendChild(createPhotosFragment(offer.photos));
   offersElement.querySelector('.popup__avatar').src = author.avatar;
-
+  showFeatureIcons(offer.features);
   return offersElement
 }

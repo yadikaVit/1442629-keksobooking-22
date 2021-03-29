@@ -5,21 +5,21 @@ export {getServerOffers, sendData};
 const getServerOffers = function (onSuccess, onFail) {
   return fetch('https://22.javascript.pages.academy/keksobooking/data')
 
-    .then((response) => {
+    .then(function (response) {
       if (response.ok) {
         return response.json();
       }
     })
 
-    .then((offers) => {
+    .then(function (offers) {
       onSuccess(offers);
     })
-    .catch(() => {
+    .catch(function () {
       onFail('Не удалось загрузить объявления поблизости. Перезагузите страницу');
     });
 };
 
-const sendData = (onSuccess, onFail, body) => {
+const sendData = function (onSuccess, onFail, body) {
   fetch(
     'https://22.javascript.pages.academy/keksobooking',
     {
@@ -27,14 +27,14 @@ const sendData = (onSuccess, onFail, body) => {
       body,
     },
   )
-    .then((response) => {
+    .then(function (response) {
       if (response.ok) {
         onSuccess();
       } else {
         onFail();
       }
     })
-    .catch(() => {
+    .catch(function () {
       onFail();
     });
 };

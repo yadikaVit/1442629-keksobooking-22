@@ -1,6 +1,6 @@
 'use strict';
 
-export {offerFilter, setupFilters};
+export {filterOffer, setupFilters};
 const HIGH_PRICE = 50000;
 const LOW_PRICE = 10000;
 
@@ -11,41 +11,41 @@ const filterHousingGuests = document.querySelector('#housing-guests');
 const filterHousingFeatures = document.querySelector('#housing-features');
 
 const setupFilters = function(onChangeFilter) {
-  filterHousingType.addEventListener('change', () => {
+  filterHousingType.addEventListener('change', function() {
     onChangeFilter()
   })
 
-  filterHousingRooms.addEventListener('change', () => {
+  filterHousingRooms.addEventListener('change', function() {
     onChangeFilter()
   })
 
-  filterHousingGuests.addEventListener('change', () => {
+  filterHousingGuests.addEventListener('change', function() {
     onChangeFilter()
   })
 
-  filterHousingPrice.addEventListener('change', () => {
+  filterHousingPrice.addEventListener('change', function() {
     onChangeFilter()
   })
 
-  filterHousingFeatures.addEventListener('click', () => {
+  filterHousingFeatures.addEventListener('click', function() {
     onChangeFilter()
   })
 };
 
-const offerFilter = function(offer) {
-  const filteredByHouseType = typeFilter(offer);
-  const filteredByPrice = priceFilter(offer);
-  const filteredByRoom = roomFilter(offer);
-  const filteredByGuest = guestFilter(offer);
-  const filteredByFeature = featuresFilter(offer);
-  return filteredByHouseType && filteredByPrice && filteredByRoom && filteredByGuest && filteredByFeature;
+const filterOffer = function (offer) {
+  const filteredByHouseType = filterByType(offer);
+  const filteredByOfferPrice = filterByPrice(offer);
+  const filteredByHouseRoom = filterByRoom(offer);
+  const filteredByOfferGuest = filterByGuest(offer);
+  const filteredByOfferFeature = filterByFeatures(offer);
+  return filteredByHouseType && filteredByOfferPrice && filteredByHouseRoom && filteredByOfferGuest && filteredByOfferFeature;
 };
 
-const typeFilter = function(offer) {
+const filterByType = function (offer) {
   return filterHousingType.value === offer.offer.type || filterHousingType.value === 'any';
 };
 
-const priceFilter = (offer) => {
+const filterByPrice = function (offer) {
   switch (filterHousingPrice.value) {
     case 'low':
       return offer.offer.price < LOW_PRICE;
@@ -58,19 +58,19 @@ const priceFilter = (offer) => {
   }
 };
 
-const roomFilter = function(offer) {
+const filterByRoom = function(offer) {
   return Number(filterHousingRooms.value) === offer.offer.rooms || filterHousingRooms.value === 'any';
 };
 
-const guestFilter = function(offer) {
+const filterByGuest = function(offer) {
   return Number(filterHousingGuests.value) === offer.offer.guests || filterHousingGuests.value === 'any';
 };
 
-function featuresFilter(offers) {
+function filterByFeatures (offers) {
   const selectedFeatures = [];
   const featuresInput = filterHousingFeatures.querySelectorAll('[name="features"]')
 
-  featuresInput.forEach(feature => {
+  featuresInput.forEach(function (feature) {
 
     if (feature.checked) {
       selectedFeatures.push(feature.value)

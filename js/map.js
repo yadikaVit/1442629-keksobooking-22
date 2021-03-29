@@ -4,12 +4,13 @@ export {mapInitialize, disableForm, resetCoordinates};
 import {renderOffer} from './popup.js';
 import {getServerOffers} from './server.js';
 import {showAlert, setUserFormSubmit} from './form.js';
-import {offerFilter, setupFilters} from './filter.js';
+import {filterOffer, setupFilters} from './filter.js';
 
 const COORDINATE_MAIN_PIN_X = 35.68951;
 const COORDINATE_MAIN_PIN_Y = 139.69171;
 const OFFERS_COUNT = 10;
 const RERENDER_DELAY = 500;
+const NUMBER_AFTER_COMMA = 5;
 
 /* global L:readonly */
 /* global _:readonly */
@@ -44,12 +45,12 @@ const pinLocation = document.querySelector('#address');
 const mapInitialize = function () {
   pinLocation.readOnly = true;
 
-  map.on('load', () => {
+  map.on('load', function () {
     adForm.classList.remove('ad-form--disabled');
     activateElements(adFormElements);
     mapFilterForm.classList.remove('map__filters--disabled');
     activateElements(mapFilterItems);
-    fillInAdressCoordinatesPin(mainPinMarker);
+    fillInAddressCoordinatesPin(mainPinMarker);
     getServerOffers(cacheOffers, showAlert);
     setUserFormSubmit();
   })
@@ -83,12 +84,12 @@ const mainPinMarker = L.marker(
   },
 ).addTo(map);
 
-const fillInAdressCoordinatesPin = function (pin) {
-  pinLocation.value = pin.getLatLng().lat.toFixed(5) + ', ' + pin.getLatLng().lng.toFixed(5);
+const fillInAddressCoordinatesPin = function (pin) {
+  pinLocation.value = pin.getLatLng().lat.toFixed(NUMBER_AFTER_COMMA) + ', ' + pin.getLatLng().lng.toFixed(NUMBER_AFTER_COMMA);
 };
 
-mainPinMarker.on('moveend', (evt) => {
-  fillInAdressCoordinatesPin(evt.target)
+mainPinMarker.on('moveend', function (evt) {
+  fillInAddressCoordinatesPin(evt.target)
 });
 
 
@@ -98,7 +99,7 @@ const resetCoordinates = function () {
 };
 
 const markers = new L.LayerGroup().addTo(map);
-const clearMarkers = () => {
+const clearMarkers = function () {
   markers.clearLayers();
 };
 
@@ -116,10 +117,10 @@ const reloadMarkers = _.debounce(function() {
 const renderOffersOnMap = function() {
   const sliceOffers = [...cachedOffers];
   const filterOffers = sliceOffers
-    .filter(offerFilter)
+    .filter(filterOffer)
     .slice(0, OFFERS_COUNT);
 
-  filterOffers.forEach((item) => {
+  filterOffers.forEach(function(item) {
     const icon = L.icon({
       iconUrl: 'img/pin.svg',
       iconSize: [40, 40],
